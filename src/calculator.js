@@ -44,37 +44,39 @@ function divide(a, b) {
 // Map of supported operations
 const operations = { add, subtract, multiply, divide };
 
-// --- CLI entry point ---
-const [, , operation, arg1, arg2] = process.argv;
+// --- CLI entry point (only runs when executed directly, not when imported) ---
+if (require.main === module) {
+  const [, , operation, arg1, arg2] = process.argv;
 
-if (!operation || arg1 === undefined || arg2 === undefined) {
-  console.error(
-    "Usage: node src/calculator.js <add|subtract|multiply|divide> <num1> <num2>"
-  );
-  process.exit(1);
-}
+  if (!operation || arg1 === undefined || arg2 === undefined) {
+    console.error(
+      "Usage: node src/calculator.js <add|subtract|multiply|divide> <num1> <num2>"
+    );
+    process.exit(1);
+  }
 
-if (!operations[operation]) {
-  console.error(
-    `Unknown operation: "${operation}". Supported: add, subtract, multiply, divide`
-  );
-  process.exit(1);
-}
+  if (!operations[operation]) {
+    console.error(
+      `Unknown operation: "${operation}". Supported: add, subtract, multiply, divide`
+    );
+    process.exit(1);
+  }
 
-const a = parseFloat(arg1);
-const b = parseFloat(arg2);
+  const a = parseFloat(arg1);
+  const b = parseFloat(arg2);
 
-if (isNaN(a) || isNaN(b)) {
-  console.error("Both arguments must be valid numbers.");
-  process.exit(1);
-}
+  if (isNaN(a) || isNaN(b)) {
+    console.error("Both arguments must be valid numbers.");
+    process.exit(1);
+  }
 
-try {
-  const result = operations[operation](a, b);
-  console.log(`Result: ${result}`);
-} catch (err) {
-  console.error(`Error: ${err.message}`);
-  process.exit(1);
+  try {
+    const result = operations[operation](a, b);
+    console.log(`Result: ${result}`);
+  } catch (err) {
+    console.error(`Error: ${err.message}`);
+    process.exit(1);
+  }
 }
 
 module.exports = { add, subtract, multiply, divide };
